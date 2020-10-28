@@ -1,8 +1,10 @@
 $(document).ready(function () {
-    getPokemones("https://pokeapi.co/api/v2/pokemon/")
+    getPokemones("https://pokeapi.co/api/v2/pokemon/", 1)
 
     $("#more_pokemons").click(function(){
-        getPokemones(this.dataset.next)
+        if (this.dataset.next){
+            getPokemones(this.dataset.next, parseInt(this.dataset.next.split('=')[1].split('&')[0]) + 1)
+        }
     });
 
     $('#pokedex').click(function(e){
@@ -106,13 +108,13 @@ function getDataPokemon(pokemon_url){
         })
 };
 
-function getPokemones(url){
+function getPokemones(url, count){
     fetch(url)
         .then(function(res){
             return res.json()
         })
         .then(function(data){
-            i = 1
+            i = count
             data.results.forEach(function(pokemon, index){
                 index = i++;
                 addPokemon(pokemon, index)
